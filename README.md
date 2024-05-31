@@ -8,10 +8,10 @@ For formal inquiries about model and roadmap, please contact us at open-source@2
 ---
 ## Highlights
 1. **Conversational TTS**: ChatTTS is optimized for dialogue-based tasks, enabling natural and expressive speech synthesis. It supports multiple speakers, facilitating interactive conversations.
-2. **Fine-grained Control**: The model could predict and control fine-grained prosodic features, including laughter, pauses, and interjections. 
+2. **Fine-grained Control**: The model could predict and control fine-grained prosodic features, including laughter, pauses, and interjections.
 3. **Better Prosody**: ChatTTS surpasses most of open-source TTS models in terms of prosody. We provide pretrained models to support further research and development.
 
-For the detailed description of the model, you can refer to [video on Bilibili](https://www.bilibili.com/video/BV1zn4y1o7iV) 
+For the detailed description of the model, you can refer to [video on Bilibili](https://www.bilibili.com/video/BV1zn4y1o7iV)
 
 ---
 
@@ -50,7 +50,7 @@ std, mean = torch.load('ChatTTS/asset/spk_stat.pt').chunk(2)
 rand_spk = torch.randn(768) * std + mean
 
 params_infer_code = {
-  'spk_emb': rand_spk, # add sampled speaker 
+  'spk_emb': rand_spk, # add sampled speaker
   'temperature': .3, # using custom temperature
   'top_P': 0.7, # top P decode
   'top_K': 20, # top K decode
@@ -59,11 +59,11 @@ params_infer_code = {
 ###################################
 # For sentence level manual control.
 
-# use oral_(0-9), laugh_(0-2), break_(0-7) 
+# use oral_(0-9), laugh_(0-2), break_(0-7)
 # to generate special token in text to synthesize.
 params_refine_text = {
   'prompt': '[oral_2][laugh_0][break_6]'
-} 
+}
 
 wav = chat.infer("<PUT YOUR TEXT HERE>", params_refine_text=params_refine_text, params_infer_code=params_infer_code)
 
@@ -79,23 +79,21 @@ wav = chat.infer(text, skip_refine_text=True, params_infer_code=params_infer_cod
 
 ```python
 inputs_en = """
-chat T T S is a text to speech model designed for dialogue applications. 
-[uv_break]it supports mixed language input [uv_break]and offers multi speaker 
-capabilities with precise control over prosodic elements [laugh]like like 
-[uv_break]laughter[laugh], [uv_break]pauses, [uv_break]and intonation. 
-[uv_break]it delivers natural and expressive speech,[uv_break]so please
-[uv_break] use the project responsibly at your own risk.[uv_break]
+chat T T S is a text to speech model designed for dialogue applications.
+it supports mixed language input and offers multi speaker
+capabilities with precise control over prosodic elements like
+laughter, pauses, and intonation.
+it delivers natural and expressive speech, so please
+use the project responsibly at your own risk.
 """.replace('\n', '') # English is still experimental.
 
 params_refine_text = {
   'prompt': '[oral_2][laugh_0][break_4]'
-} 
-audio_array_cn = chat.infer(inputs_cn, params_refine_text=params_refine_text)
+}
+# Commenting out the Chinese input to focus on English only
+# audio_array_cn = chat.infer(inputs_cn, params_refine_text=params_refine_text)
 audio_array_en = chat.infer(inputs_en, params_refine_text=params_refine_text)
 ```
-[male speaker](https://github.com/2noise/ChatTTS/assets/130631963/e0f51251-db7f-4d39-a0e9-3e095bb65de1)
-
-[female speaker](https://github.com/2noise/ChatTTS/assets/130631963/f5dcdd01-1091-47c5-8241-c4f6aaaa8bbd)
 </details>
 
 ---
@@ -105,7 +103,7 @@ audio_array_en = chat.infer(inputs_en, params_refine_text=params_refine_text)
 - [ ] Streaming audio generation without refining the text*
 - [ ] Open-source the 40k hour version with multi-emotion control
 - [ ] ChatTTS.cpp maybe? (PR or new repo are welcomed.)
- 
+
 ----
 ## FAQ
 
