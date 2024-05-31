@@ -1,6 +1,7 @@
 import ChatTTS
 import numpy as np
 import soundfile as sf
+import wave
 
 # Create an instance of the Chat class
 chat = ChatTTS.Chat()
@@ -47,8 +48,12 @@ concatenated_audio = np.clip(concatenated_audio, -1, 1)
 # Print the type and content of the audio array
 print(f"Concatenated audio content: {concatenated_audio[:10]}")  # Print the first 10 elements for inspection
 
-# Save the generated audio to a file
-sf.write('output_en.wav', concatenated_audio, 24000, format='WAV', subtype='PCM_16')
+# Save the generated audio to a file using the wave module
+with wave.open('output_en.wav', 'w') as wf:
+    wf.setnchannels(1)
+    wf.setsampwidth(2)
+    wf.setframerate(24000)
+    wf.writeframes((concatenated_audio * 32767).astype(np.int16).tobytes())
 print("Audio saved to output_en.wav.")
 
 # Simulate audio generation with a small dummy audio array
