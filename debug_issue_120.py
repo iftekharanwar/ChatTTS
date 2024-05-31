@@ -24,38 +24,32 @@ params_refine_text = {
 }
 
 # Generate the audio from the English input text
-# print("Generating audio...")
-# audio_array_en = chat.infer(inputs_en, params_refine_text=params_refine_text, use_decoder=False)
-# print("Audio generation complete.")
+print("Generating audio...")
+audio_array_en = chat.infer(inputs_en, params_refine_text=params_refine_text, use_decoder=False)
+print("Audio generation complete.")
 
 # Check the shape and type of the audio array
-# print(f"Audio array shape: {np.shape(audio_array_en)}")
-# print(f"Audio array type: {type(audio_array_en)}")
+print(f"Audio array shape: {np.shape(audio_array_en)}")
+print(f"Audio array type: {type(audio_array_en)}")
 
 # Concatenate the audio array and check its shape and type
-# concatenated_audio = np.concatenate(audio_array_en)
-# print(f"Concatenated audio shape: {np.shape(concatenated_audio)}")
-# print(f"Concatenated audio type: {type(concatenated_audio)}")
+concatenated_audio = np.concatenate(audio_array_en)
+print(f"Concatenated audio shape: {np.shape(concatenated_audio)}")
+print(f"Concatenated audio type: {type(concatenated_audio)}")
 
 # Ensure the concatenated audio is a 2D array with shape (frames, channels)
-# if concatenated_audio.ndim == 1:
-#     concatenated_audio = np.expand_dims(concatenated_audio, axis=1)
+if concatenated_audio.ndim == 1:
+    concatenated_audio = np.expand_dims(concatenated_audio, axis=1)
 
-# Save the generated audio to a file in chunks
-# chunk_size = 10000  # Define the chunk size
-# num_chunks = len(concatenated_audio) // chunk_size + 1
+# Ensure the audio data is in the correct range [-1, 1]
+concatenated_audio = np.clip(concatenated_audio, -1, 1)
 
-# for i in range(num_chunks):
-#     start_idx = i * chunk_size
-#     end_idx = min((i + 1) * chunk_size, len(concatenated_audio))
-#     chunk = concatenated_audio[start_idx:end_idx]
-#     if i == 0:
-#         sf.write('output_en.wav', chunk, 24000, format='WAV')
-#     else:
-#         sf.write('output_en.wav', chunk, 24000, format='WAV', append=True)
-#     print(f"Saved chunk {i + 1}/{num_chunks} to output_en.wav")
+# Print the type and content of the audio array
+print(f"Concatenated audio content: {concatenated_audio[:10]}")  # Print the first 10 elements for inspection
 
-# print("Audio saved to output_en.wav.")
+# Save the generated audio to a file
+sf.write('output_en.wav', concatenated_audio, 24000, format='WAV', subtype='PCM_16')
+print("Audio saved to output_en.wav.")
 
 # Simulate audio generation with a small dummy audio array
 dummy_audio = np.random.rand(1000, 1)  # Create a small dummy audio array
